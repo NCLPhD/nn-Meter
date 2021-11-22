@@ -1,0 +1,50 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
+name: Integrated Test for Torch Model Based on ONNX
+
+on: [push]
+
+jobs:
+  torch-model-test:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6.10
+
+    - name: Cache
+      uses: actions/cache@v2
+      id: cache
+      env: 
+        cache-name: download-cache
+      with:
+        path: |
+          ~/.nn_meter
+          /home/runner/work/nn-Meter/data/testmodels
+        key: ${{hashFiles('nn_meter/configs/predictors.yaml')}}-${{hashFiles('tests/integration_test.py')}}
+
+    - name: Install dependencies
+      run: |
+        pip install onnx==1.9.0
+        pip install torch==1.9.0
+        pip install torchvision==0.10.0
+        pip install onnx-simplifier
+        
+    - name: Install nn-Meter
+      run: pip install -U .
+
+    - name: Integration test
+      run: python tests/integration_test_torch.py --apply-onnx
+    
+    - name: Diff result with reference
+      run: diff tests/data/reference_result_onnx_based_torch.txt tests/test_result_onnx_based_torch.txt
+
+    - name: clean env
+      run: rm tests/test_result_onnx_based_torch.txt

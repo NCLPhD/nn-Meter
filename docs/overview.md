@@ -1,5 +1,5 @@
 # Overview
-Note: This is an alpha (preview) version which is still under refining.
+Note: This is an beta (preview) version which is still under refining.
 
 nn-Meter is a novel and efficient system to accurately predict the inference latency of DNN models on diverse edge devices.
 
@@ -19,6 +19,8 @@ If you have a new hardware to predict DNN latency,  a re-run of nn-Meter is requ
 ## Learn More
 - [Get started](quick_start.md)
 
-- [How to use nn-Meter](usage.md)
+- [How to use nn-Meter Predictor](predictor/usage.md)
 
-- [nn-meter in hardware-aware NAS](hardware-aware-model-design.md)
+- [nn-Meter in hardware-aware NAS](predictor/hardware-aware-model-design.md)
+
+- [nn-Meter bench dataset](dataset.md)

@@ -1,15 +1,32 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT license.
-from .nn_meter import (
-    nnMeter,
+
+try:
+    import pkg_resources  # part of setuptools
+    __version__ = pkg_resources.require("nn-meter")[0].version
+except ModuleNotFoundError:
+    __version__ = 'UNKNOWN'
+
+import logging
+from functools import partial, partialmethod
+
+from .predictor import (
+    nnMeterPredictor,
     load_latency_predictor,
     list_latency_predictors,
+    latency_metrics
+)
+from .ir_converter import (
     model_file_to_graph,
     model_to_graph
 )
-from .utils.utils import download_from_url
-import logging
-from functools import partial, partialmethod
+from .utils import (
+    create_user_configs,
+    change_user_data_folder
+)
+from .dataset import bench_dataset
+from .utils import download_from_url
+
 
 logging.KEYINFO = 22
 logging.addLevelName(logging.KEYINFO, 'KEYINFO')
